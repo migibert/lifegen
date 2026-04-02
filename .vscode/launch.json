@@ -1,0 +1,40 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // ── Primary: run the sim with full Bevy rendering ──────────────────
+      "name": "Run Sim",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin", "alife_sim"],
+        "filter": { "name": "alife_sim", "kind": "bin" }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        // Bevy: force single-threaded Winit event loop on macOS (required for Apple Silicon)
+        "WGPU_BACKEND": "metal",
+        // Rust backtrace on panic — essential during early development
+        "RUST_BACKTRACE": "1",
+        // Bevy async executor thread count — leave 2 cores for OS/render
+        "BEVY_WORKER_THREADS": "6"
+      }
+    },
+    {
+      // ── Secondary: run all unit + integration tests with output visible ──
+      "name": "Run All Tests",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["test", "--", "--nocapture", "--test-threads=1"],
+        "filter": { "kind": "test" }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "RUST_BACKTRACE": "1"
+      }
+    }
+  ]
+}

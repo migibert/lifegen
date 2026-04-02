@@ -1,0 +1,50 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "cargo check",
+      "type": "cargo",
+      "command": "check",
+      "args": ["--all-targets"],
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "silent", "clear": true },
+      "problemMatcher": ["$rustc"]
+    },
+    {
+      "label": "cargo clippy",
+      "type": "cargo",
+      "command": "clippy",
+      "args": ["--all-targets", "--", "-D", "warnings"],
+      "group": "build",
+      "presentation": { "reveal": "always", "clear": true },
+      "problemMatcher": ["$rustc"]
+    },
+    {
+      "label": "cargo test (all)",
+      "type": "cargo",
+      "command": "test",
+      "args": ["--", "--nocapture"],
+      "group": { "kind": "test", "isDefault": true },
+      "presentation": { "reveal": "always", "clear": true },
+      "problemMatcher": ["$rustc"]
+    },
+    {
+      "label": "cargo test (systems only)",
+      "type": "cargo",
+      "command": "test",
+      "args": ["--", "systems::", "--nocapture"],
+      "group": "test",
+      "presentation": { "reveal": "always", "clear": true },
+      "problemMatcher": ["$rustc"]
+    },
+    {
+      "label": "cargo build (release)",
+      "type": "cargo",
+      "command": "build",
+      "args": ["--release"],
+      "group": "build",
+      "presentation": { "reveal": "always", "clear": true },
+      "problemMatcher": ["$rustc"]
+    }
+  ]
+}

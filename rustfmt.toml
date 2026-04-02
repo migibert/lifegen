@@ -1,0 +1,26 @@
+# rustfmt configuration
+# Mirrors rust-analyzer settings in settings.json
+
+edition = "2021"
+max_width = 100               # matches editor.rulers in settings.json
+
+# Imports
+imports_granularity = "Module" # group use statements by module, not crate
+group_imports = "StdExternalCrate" # std first, then external (bevy, nalgebra), then internal
+reorder_imports = true
+
+# Formatting style
+newline_style = "Unix"
+tab_spaces = 4
+hard_tabs = false
+trailing_comma = "Vertical"   # trailing commas on multi-line structs/enums
+use_field_init_shorthand = true
+
+# Comments
+wrap_comments = true
+comment_width = 100
+normalize_comments = true
+
+# Misc
+format_strings = false        # don't reformat string literals (preserves intentional alignment)
+struct_field_align_threshold = 30  # align struct fields if names are within 30 chars of each other

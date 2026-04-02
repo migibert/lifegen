@@ -1,0 +1,59 @@
+{
+  // --- Rust Analyzer ---
+  "rust-analyzer.cargo.features": "all",
+  "rust-analyzer.checkOnSave": true,
+  "rust-analyzer.check.command": "clippy",
+  "rust-analyzer.check.extraArgs": [
+    "--",
+    "-W", "clippy::all",
+    "-W", "clippy::pedantic",
+    "-A", "clippy::module_name_repetitions",  // common in ECS component naming
+    "-A", "clippy::too_many_arguments"         // Bevy systems can have many params
+  ],
+  "rust-analyzer.inlayHints.typeHints.enable": true,
+  "rust-analyzer.inlayHints.parameterHints.enable": true,
+  "rust-analyzer.inlayHints.chainingHints.enable": true,
+  "rust-analyzer.lens.run.enable": true,
+  "rust-analyzer.lens.debug.enable": true,
+  "rust-analyzer.lens.implementations.enable": true,
+
+  // --- Formatting ---
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "rust-lang.rust-analyzer",
+  "[rust]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+  "[toml]": {
+    "editor.formatOnSave": true
+  },
+
+  // --- Copilot ---
+  // Custom instructions file is at .github/copilot-instructions.md
+  // Copilot will read it automatically for all completions in this workspace
+  "github.copilot.enable": {
+    "*": true,
+    "markdown": false   // don't autocomplete in spec/docs files
+  },
+
+  // --- Test Explorer ---
+  // Uses the built-in Rust test runner via cargo
+  "rust-analyzer.runnables.extraArgs": ["--", "--nocapture"],
+  "rust-analyzer.runnables.extraTestBinaryArgs": ["--nocapture"],
+
+  // --- Editor comfort ---
+  "editor.rulers": [100],   // matches rustfmt max_width below
+  "editor.wordWrap": "off",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  // --- File nesting (keep ECS modules tidy in explorer) ---
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.rs": "${capture}_test.rs, ${capture}_tests.rs"
+  },
+
+  // --- Extensions (prompt to install if missing) ---
+  "extensions.ignoreRecommendations": false
+}

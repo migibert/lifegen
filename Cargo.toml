@@ -1,0 +1,69 @@
+[package]
+name    = "alife_sim"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "alife_sim"
+path = "src/main.rs"
+
+# ── Dependencies ───────────────────────────────────────────────────────────────
+
+[dependencies]
+
+# ECS engine, rendering, game loop
+bevy = { version = "0.14", features = [
+    "bevy_winit",         # window management
+    "bevy_render",        # rendering pipeline
+    "bevy_sprite",        # 2D sprites for entity rendering
+    "bevy_asset",         # asset loading
+    "dynamic_linking",    # faster incremental compile in dev (disabled in release)
+] }
+
+# Neural network matrix math — static-size matrices compile to SIMD on Apple Silicon
+nalgebra = { version = "0.33", features = ["rand"] }
+
+# egui integration for the observer UI panels
+bevy_egui = "0.28"
+
+# Perlin noise for biome generation
+noise = "0.9"
+
+# Serialization for world state snapshots
+serde      = { version = "1",    features = ["derive"] }
+serde_json = "1"
+
+# Random number generation
+rand            = "0.8"
+rand_distr      = "0.4"   # Gaussian distribution for mutation perturbation
+
+# ── Dev dependencies (tests only) ─────────────────────────────────────────────
+
+[dev-dependencies]
+# No extra deps needed — Bevy's MinimalPlugins is sufficient for system tests
+
+# ── Profiles ──────────────────────────────────────────────────────────────────
+
+# Dev: fast compile, debug symbols, moderate optimisation so the sim is usable
+[profile.dev]
+opt-level = 1              # 0 is too slow for Bevy; 1 is a good dev balance
+
+# Dev dependencies (bevy internals etc.) get full optimisation even in dev builds
+# This dramatically speeds up bevy rendering in debug mode
+[profile.dev.package."*"]
+opt-level = 3
+
+# Release: maximum performance for long benchmark runs
+[profile.release]
+opt-level     = 3
+lto           = "thin"     # link-time optimisation (thin is fast enough for M2)
+codegen-units = 1          # single codegen unit for better inlining
+strip         = "symbols"  # strip debug symbols from release binary
+
+# ── Features ──────────────────────────────────────────────────────────────────
+
+[features]
+default = []
+# Disable rendering for headless benchmark / CI runs
+# Usage: cargo run --no-default-features --features headless
+headless = []
